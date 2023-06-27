@@ -6,7 +6,7 @@
 /*   By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 16:17:52 by mflury            #+#    #+#             */
-/*   Updated: 2023/06/02 20:22:30 by mflury           ###   ########.fr       */
+/*   Updated: 2023/06/08 19:40:51 by mflury           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_atob(int pid, char c)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(500);
+		usleep(100);
 		bit++;
 	}
 }
@@ -74,25 +74,25 @@ void	ft_atob(int pid, char c)
 // multi words support w/o "",
 // space between words,
 // \n at the end of the transmition for readability.
-void	multi_argv(int pid, char **argv)
-{
-	int	i;
-	int	j;
+// void	multi_argv(int pid, char **argv)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	j = 2;
-	while (argv[j])
-	{
-		while (argv[j][i])
-			ft_atob(pid, argv[j][i++]);
-		i = 0;
-		j++;
-		if (argv[j])
-			ft_atob(pid, ' ');
-		else
-			ft_atob(pid, '\n');
-	}
-}
+// 	i = 0;
+// 	j = 2;
+// 	while (argv[j])
+// 	{
+// 		while (argv[j][i])
+// 			ft_atob(pid, argv[j][i++]);
+// 		i = 0;
+// 		j++;
+// 		if (argv[j])
+// 			ft_atob(pid, ' ');
+// 		else
+// 			ft_atob(pid, '\n');
+// 	}
+// }
 
 // because why not a main in 10 lines,
 // and also put a \n for readability.
@@ -118,7 +118,7 @@ int	main(int argc, char **argv)
 		error("not enough arguments");
 	pid = ft_atoi(argv[1]);
 	if (argc > 3)
-		multi_argv(pid, argv);
+		error("too much arguments");
 	if (argc == 3)
 		single_argv(pid, argv[2]);
 	return (0);
