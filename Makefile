@@ -5,51 +5,46 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mflury <mflury@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/31 19:05:58 by mflury            #+#    #+#              #
-#    Updated: 2023/06/01 15:13:33 by mflury           ###   ########.fr        #
+#    Created: 2022/12/16 23:31:40 by mflury            #+#    #+#              #
+#    Updated: 2022/12/16 23:31:40 by mflury           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME_SERVER = server
-NAME_CLIENT = client
-OBJ_SERVER = $(SRC_SERVER:.c=.o)
-OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
+NAME = libftprintf.a
+OBJ = $(SRC:.c=.o)
 CC = @gcc
 CFLAGS = -Wall -Werror -Wextra
 
-SRC_SERVER = server.c \
-			error.c \
+SRC = ft_printf.c \
+ft_print_csp.c \
+ft_print_diuxx.c \
 
-SRC_CLIENT = client.c \
-			error.c \
+all : $(NAME)
 
-
-all : $(NAME_SERVER) $(NAME_CLIENT)
-
-$(NAME_SERVER) : $(OBJ_SERVER)
-	@echo Creating $(NAME_SERVER)
-	@make -C printf/
-	$(CC) $(OBJ_SERVER) $(CFLAGS) ./printf/libftprintf.a -o $(NAME_SERVER)
-
-$(NAME_CLIENT) : $(OBJ_CLIENT)
-	@echo Creating $(NAME_CLIENT)
-	$(CC) $(OBJ_CLIENT) $(CFLAGS) ./printf/libftprintf.a -o $(NAME_CLIENT)
+$(NAME) : $(OBJ)
+	@echo Creating static library
+	@ar rcs $(NAME) $(OBJ)
 
 %.o : %.c
 	@echo Creating objets files $<
-	$(CC) $(CFLAGS) -Iprintf -c $< -o $@
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean :
 	@echo Deleting objets files
-	@make clean -C printf/
-	@rm -f $(OBJ_SERVER)
-	@rm -f $(OBJ_CLIENT)
-	
-fclean : clean 
+	@rm -f $(OBJ)
+
+fclean : clean
 	@echo Deleting others files
-	@rm -f ./printf/libftprintf.a
-	@rm -f $(NAME_SERVER) $(NAME_CLIENT)
+	@rm -f $(NAME) $(NAME).tar.gz $(NAME).zip
 
 re : fclean all
 
-.PHONY : clean fclean re
+tar :
+	@echo Creating TAR.GZ archive
+	@tar -czvf $(NAME).tar.gz $(SRC) libft.h Makefile
+
+zip :
+	@echo Creating ZIP archive
+	@zip -r $(NAME).zip $(SRC) libft.h Makefile
+
+.PHONY : clean fclean re tar zip
